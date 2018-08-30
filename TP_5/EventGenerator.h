@@ -1,15 +1,25 @@
 #pragma once
+#include "Event.h"
+#include <allegro5/allegro.h>
+
+#define FPS	50
+
 class EventGenerator
 {
 public:
 	EventGenerator();
-	~EventGenerator();
+	
 
 	bool is_event();
-	eventType get_event();
+	Event get_event();
 	bool is_quit();
+	bool init_has_failed();
+	void destroy();
 
 private:
-	eventType ev;
+	Event event;
+	ALLEGRO_EVENT_QUEUE * event_queue;
+	ALLEGRO_TIMER * timer;
+	bool initError;
 };
 
