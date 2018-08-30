@@ -5,26 +5,36 @@
 #include "Worm.h"
 #include "dispatch.h"
 
-
-
 using namespace std;
+bool init(EventGenerator * eventGen, Grapher * grapher);
 
 int main(int argc, char *argv[])
 {
-	// INITS
+	EventGenerator eventGen;
+	Grapher grapher;
 	Worm * wormPArray[2];
-	Worm w1(), w2();
+	Worm w1, w2;
 	wormPArray[1] = &w1;
 	wormPArray[2] = &w2;
-	EventGenerator eventGen;
-	while (!eventGen.is_quit())
+
+	if (init(&eventGen, &grapher))
 	{
-		if (eventGen.is_event())
+		while (!eventGen.is_quit())
 		{
-			dispatch(eventGen.get_event(), wormPArray);
+			if (eventGen.is_event())
+			{
+				dispatch(eventGen.get_event(), w1, wormPArray);
+			}
+
 		}
-
 	}
-
 	// DESTROYS
+}
+
+bool init(EventGenerator * eventGen, Grapher * grapher)
+{
+	grapher = new Grapher();
+	eventGen = new EventGenerator();
+	return true;
+
 }

@@ -1,8 +1,6 @@
 #include "EventGenerator.h"
 
-
 using namespace std;
-
 
 EventGenerator::EventGenerator()
 {
@@ -39,6 +37,13 @@ Event EventGenerator::get_event()
 		event.set_type(POSSIBLE_WORM_MOVE);
 		event.set_key_event_unichar(ev.keyboard.unichar);
 	}
+	else if (ev.type == ALLEGRO_EVENT_KEY_UP)
+	{
+		event.set_type(POSSIBLE_WORM_STOP);
+		event.set_key_event_unichar(ev.keyboard.unichar);
+	}
+
+	return event;
 
 }
 

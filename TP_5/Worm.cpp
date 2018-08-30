@@ -6,7 +6,8 @@ Worm::Worm()
 {
 }
 
-
-Worm::~Worm()
+void Worm::update(Worm * wArray[], int wormCount)
 {
 }
+
+

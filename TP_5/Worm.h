@@ -3,7 +3,7 @@ class Worm
 {
 public:
 	Worm();
-	~Worm();
+	void update(Worm * wArray[], int wormCount);
 
 private:
 	wormStates_n currentState; // START_MOVING, MOVING, STOP_MOVING, RESTING, JUMP
