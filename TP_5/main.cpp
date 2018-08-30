@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 
 bool init(EventGenerator * eventGen, Grapher * grapher)
 {
-	grapher = new Grapher();
+	grapher = new Grapher(); 
 	eventGen = new EventGenerator();
 	return true;
 
