@@ -119,6 +119,7 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="EventGenerator.h" />
     <ClInclude Include="Grapher.h" />
+    <ClInclude Include="Vector.h" />
     <ClInclude Include="Worm.h" />
   </ItemGroup>
   <ItemGroup>
@@ -127,6 +128,7 @@
     <ClCompile Include="EventGenerator.cpp" />
     <ClCompile Include="Grapher.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Vector.cpp" />
     <ClCompile Include="Worm.cpp" />
   </ItemGroup>
   <ItemGroup>
