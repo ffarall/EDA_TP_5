@@ -1,4 +1,4 @@
 #pragma once
 
 
-void dispatch(Event ev, Worm worm, Worm * wArray[]);
+void dispatch(Event ev, int wormCount, Worm * wArray[], Grapher * grapher);

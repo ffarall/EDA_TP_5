@@ -1,10 +1,8 @@
 #include "Event.h"
 
-
-
 Event::Event()
 {
-	type = -1;			//Para evitar errores el evento comienza "sin tipo"
+	type = VOID;			//Para evitar errores el evento comienza "sin tipo"
 }
 
 Event::Event(int type)

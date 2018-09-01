@@ -3,7 +3,7 @@
 
 using namespace std;
 
-enum Events {POSSIBLE_WORM_MOVE , REFRESH, POSSIBLE_WORM_STOP};
+enum Events {POSSIBLE_WORM_MOVE , REFRESH, POSSIBLE_WORM_STOP, QUIT, VOID};
 
 class Event
 {
