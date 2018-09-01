@@ -14,8 +14,10 @@ int main(int argc, char *argv[])
 	Grapher grapher;
 	Worm * wormPArray[2];
 	Worm w1, w2;
+	int wormCount;
 	wormPArray[1] = &w1;
 	wormPArray[2] = &w2;
+	wormCount = 2;
 
 	if (init(&eventGen, &grapher))
 	{
@@ -23,7 +25,7 @@ int main(int argc, char *argv[])
 		{
 			if (eventGen.is_event())
 			{
-				dispatch(eventGen.get_event(), w1, wormPArray);
+				dispatch(eventGen.get_event(), wormCount, wormPArray);
 			}
 
 		}
