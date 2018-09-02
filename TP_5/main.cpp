@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 		{
 			if (eventGen.is_event())
 			{
-				dispatch(eventGen.get_event(), wormCount, wormPArray);
+				dispatch(eventGen.get_event(), wormCount, wormPArray, &grapher);
 			}
 
 		}
