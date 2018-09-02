@@ -74,7 +74,7 @@ bool EventGenerator::is_event()
 
 bool EventGenerator::is_quit()
 {
-	if (event.get_event_type == QUIT)
+	if (event.get_event_type() == QUIT)
 	{
 		return true;
 	}
