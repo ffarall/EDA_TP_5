@@ -5,6 +5,7 @@
 #define BACKGROUND_FILE	"Scenario.png"
 #define N_WALKING_IMAGES	15
 #define N_JUMPING_IMAGES	10
+#define NO_ROTATION			0
 
 
 class Grapher
