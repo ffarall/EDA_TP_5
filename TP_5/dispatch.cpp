@@ -19,7 +19,7 @@ void dispatch(Event ev, int wormCount, Worm * wArray[], Grapher * grapher) // wo
 			for (int i = 0; i < wormCount; i++)
 			{
 				wArray[i]->update(); // increment frameCount of worm.
-				grapher.update(wArray, wormCount);
+				grapher->update(wArray, wormCount);
 			} 
 			break;
 
