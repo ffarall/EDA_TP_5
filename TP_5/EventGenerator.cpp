@@ -2,7 +2,7 @@
 
 using namespace std;
 
-EventGenerator::EventGenerator()
+EventGenerator::EventGenerator(): event()
 {
 	event_queue = NULL;
 	timer = NULL;

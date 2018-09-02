@@ -33,7 +33,8 @@ int main(int argc, char *argv[])
 
 		}
 	}
-	// DESTROYS
+	grapher->destroy();
+	eventGen->destroy();
 }
 
 bool init(EventGenerator * eventGen, Grapher * grapher)
