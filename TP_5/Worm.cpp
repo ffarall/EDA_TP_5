@@ -115,8 +115,8 @@ char Worm::get_keyRight()
 
 void Worm::set_pos(Vector pos_)
 {
-	pos.set_x(pos_.get_x);
-	pos.set_y(pos_.get_y);
+	pos.set_x(pos_.get_x());
+	pos.set_y(pos_.get_y());
 }
 
 void Worm::set_pos(int x_, int y_)
@@ -211,12 +211,12 @@ wormEvent_n Worm::event_decoder(Event& ev_)
 void Worm::update(Event& ev)
 {
 	const wormFsmCell_n wormFsm[WORM_FSM_EVENTS][WORM_FSM_STATES] =
-	{ // START_MOVING,							MOVING,							STOP_MOVING,						IDLE,						START_JUMPING							JUMPING						LANDING	
-		{{START_MOVING, no_act_routine},		{MOVING, no_act_routine},		{MOVING, no_act_routine},			{START_MOVING, turn_worm},	{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}},		// KEY_MOVE_RIGHT_DOWN
-		{{START_MOVING, no_act_routine},		{MOVING, no_act_routine},		{MOVING, no_act_routine},			{START_MOVING, turn_worm},	{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}},		// KEY_MOVE_LEFT_DOWN
-		{{IDLE, no_act_routine},				{STOP_MOVING, no_act_routine},	{STOP_MOVING, no_act_routine},		{IDLE, no_act_routine},		{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}},		// KEY_MOVE_UP
-		{{START_MOVING, refresh_start_moving},	{MOVING, refresh_moving},		{STOP_MOVING, refresh_stop_moving},	{IDLE, no_act_routine},		{START_JUMPING, refresh_start_jumping},	{JUMPING, refresh_jumping},	{LANDING, refresh_landing}},		// NEW_FRAME
-		{{JUMPING, no_act_routine},				{JUMPING, no_act_routine},		{JUMPING, no_act_routine},			{JUMPING, no_act_routine},	{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}}		// KEY_JUMP_DOWN
+	{ // START_MOVING,							MOVING,								STOP_MOVING,						IDLE,								START_JUMPING							JUMPING						LANDING	
+		{{START_MOVING, no_act_routine},		{MOVING, no_act_routine},			{MOVING, no_act_routine},			{START_MOVING, turn_worm},			{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}},		// KEY_MOVE_RIGHT_DOWN
+		{{START_MOVING, no_act_routine},		{MOVING, no_act_routine},			{MOVING, no_act_routine},			{START_MOVING, turn_worm},			{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}},		// KEY_MOVE_LEFT_DOWN
+		{{IDLE, no_act_routine},				{STOP_MOVING, no_act_routine},		{STOP_MOVING, no_act_routine},		{IDLE, no_act_routine},				{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}},		// KEY_MOVE_UP
+		{{START_MOVING, refresh_start_moving},	{MOVING, refresh_moving},			{STOP_MOVING, refresh_stop_moving},	{IDLE, no_act_routine},				{START_JUMPING, refresh_start_jumping},	{JUMPING, refresh_jumping},	{LANDING, refresh_landing}},		// NEW_FRAME
+		{{START_JUMPING, no_act_routine},		{START_JUMPING, no_act_routine},	{START_JUMPING, no_act_routine},	{START_JUMPING, no_act_routine},	{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}}		// KEY_JUMP_DOWN
 	};
 
 	wormEvent_n wormEv = event_decoder(ev);
@@ -351,7 +351,7 @@ void refresh_jumping(void * worm_)
 	}
 
 	worm->set_y(SCENARIO_FLOOR + jumpSpeed * sin(angle) * worm->get_frameCounter() + (gravity / 2) * pow(worm->get_frameCounter(), 2));
-	if (worm->get_pos().get_y > SCENARIO_FLOOR)
+	if (worm->get_pos().get_y() > SCENARIO_FLOOR)
 	{
 		worm->set_y(SCENARIO_FLOOR);
 		worm->set_currentState(LANDING);			// If the worm got back to the floor, goes to LANDING state.
