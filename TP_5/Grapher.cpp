@@ -25,7 +25,7 @@ void Grapher::destroy()
 void Grapher::update(Worm * wArray[], int wormCount)
 {
 	al_clear_to_color(al_map_rgb(0, 0, 0));
-
+	al_draw_bitmap(background, 0, 0, 0);
 	
 	for (int i = 0; i < wormCount; i++)
 	{
