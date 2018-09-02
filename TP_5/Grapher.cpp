@@ -31,11 +31,11 @@ void Grapher::update(Worm * wArray[], int wormCount)
 	{
 		if (wArray[i]->get_current_state() == MOVING)
 		{
-			al_draw_bitmap(walkingImages[wArray[i]->get_frameCounter()], wArray[i]->get_pos.get_x(), wArray[i]->get_pos.get_y(), 0);
+			al_draw_bitmap(walkingImages[wArray[i]->get_frameCounter()], wArray[i]->get_pos.get_x(), wArray[i]->get_pos.get_y(), (wArray[i]->get_orientation) ? 0 : ALLEGRO_FLIP_HORIZONTAL);
 		}
 		else if (wArray[i]->get_current_state() == JUMP)
 		{
-			al_draw_bitmap(jumpingImages[wArray[i]->get_frameCounter()], wArray[i]->get_pos.get_x(), wArray[i]->get_pos.get_y(), 0);
+			al_draw_bitmap(jumpingImages[wArray[i]->get_frameCounter()], wArray[i]->get_pos.get_x(), wArray[i]->get_pos.get_y(), (wArray[i]->get_orientation) ? 0 : ALLEGRO_FLIP_HORIZONTAL);
 		}
 	}
 	al_flip_display();
