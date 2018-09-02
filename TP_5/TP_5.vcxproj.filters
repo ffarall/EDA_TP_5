@@ -21,9 +21,6 @@
     <ClInclude Include="Worm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dispatch.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Grapher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -31,6 +28,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dispatch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
