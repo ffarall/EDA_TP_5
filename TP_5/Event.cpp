@@ -15,9 +15,9 @@ int Event::get_event_type()
 	return type;
 }
 
-char Event::get_key_event_unichar()
+char Event::get_key_event_keycode()
 {
-	return keyUniChar;
+	return keycode;
 }
 
 void Event::set_type(int type)
@@ -25,9 +25,9 @@ void Event::set_type(int type)
 	this->type = type;		//Setea tipo
 }
 
-void Event::set_key_event_unichar(int keyUniChar)
+void Event::set_key_event_keycode(int keycode)
 {
-	this->keyUniChar = keyUniChar;	//Setea codigo unichar
+	this->keycode = keycode;	//Setea codigo keycode
 }
 
 

@@ -1,5 +1,7 @@
 #include "EventGenerator.h"
 
+#define Q_KEYCODE	17
+
 using namespace std;
 
 EventGenerator::EventGenerator(): event()
@@ -21,6 +23,7 @@ EventGenerator::EventGenerator(): event()
 		}
 		else 
 		{
+			al_install_keyboard();
 			al_register_event_source(event_queue, al_get_timer_event_source(timer));
 			al_register_event_source(event_queue, al_get_keyboard_event_source());
 
@@ -40,7 +43,7 @@ Event EventGenerator::get_event()
 	}
 	else if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
 	{
-		if (ev.keyboard.unichar == 'q')
+		if (ev.keyboard.keycode == Q_KEYCODE)
 		{
 			event.set_type(QUIT);
 		}
@@ -48,12 +51,12 @@ Event EventGenerator::get_event()
 		{
 			event.set_type(POSSIBLE_WORM_MOVE);
 		}
-		event.set_key_event_unichar(ev.keyboard.unichar);
+		event.set_key_event_keycode(ev.keyboard.keycode);
 	}
 	else if (ev.type == ALLEGRO_EVENT_KEY_UP)
 	{
 		event.set_type(POSSIBLE_WORM_STOP);
-		event.set_key_event_unichar(ev.keyboard.unichar);
+		event.set_key_event_keycode(ev.keyboard.keycode);
 	}
 
 	return event;

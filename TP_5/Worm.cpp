@@ -5,7 +5,8 @@ using namespace std;
 
 #define WORM_FSM_STATES 7
 #define WORM_FSM_EVENTS 5
-#define NO_MOTION_FRAME_COUNT 5
+#define NO_MOTION_FRAME_COUNT 8
+#define	JUMPING_WORM_UP_FRAMES 6
 #define FRAMES_PER_DX 14
 #define SCENARIO_LEFT_EDGE 701
 #define SCENARIO_RIGHT_EDGE	1212
@@ -174,7 +175,7 @@ void Worm::set_currentState(wormState_n st)
 
 wormEvent_n Worm::event_decoder(Event& ev_)
 {
-	ev = ev_.get_key_event_unichar();
+	ev = ev_.get_key_event_keycode();
 	switch (ev_.get_event_type())
 	{
 	case POSSIBLE_WORM_MOVE: 
@@ -317,7 +318,7 @@ void refresh_landing(void * worm_)
 	Worm * worm = (Worm *)worm_;
 	worm->inc_frameCounter();
 
-	if (worm->get_frameCounter() == 6)
+	if (worm->get_frameCounter() == JUMPING_WORM_UP_FRAMES)
 	{
 		worm->set_currentState(IDLE);			// If the worm finish landing, goes back to resting.
 		worm->set_frameCounter(0);

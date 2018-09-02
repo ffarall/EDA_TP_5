@@ -7,9 +7,16 @@
 
 #define XDISPLAY	1920
 #define YDISPLAY	696
+#define UP_KEYCODE	84
+#define	DOWN_KEYCODE	85
+#define	LEFT_KEYCODE	82
+#define	RIGHT_KEYCODE	83
+#define W_KEYCODE		23
+#define A_KEYCODE		1
+#define D_KEYCODE		4
 
 using namespace std;
-bool init(EventGenerator * eventGen, Grapher * grapher);
+bool init(EventGenerator ** eventGen, Grapher ** grapher);
 
 int main(int argc, char *argv[])
 {
@@ -20,9 +27,14 @@ int main(int argc, char *argv[])
 	int wormCount;
 	wormPArray[0] = &w1;
 	wormPArray[1] = &w2;
+	wormPArray[0]->set_pos(808, 616);
+	wormPArray[0]->set_keys(UP_KEYCODE, LEFT_KEYCODE, RIGHT_KEYCODE);
+	wormPArray[1]->set_pos(1006, 616);
+	wormPArray[1]->set_keys(W_KEYCODE, A_KEYCODE, D_KEYCODE);
+
 	wormCount = 2;
 
-	if (init(eventGen, grapher))
+	if (init(&eventGen, &grapher))
 	{
 		while (!eventGen->is_quit())
 		{
@@ -36,15 +48,15 @@ int main(int argc, char *argv[])
 	eventGen->destroy();
 }
 
-bool init(EventGenerator * eventGen, Grapher * grapher)
+bool init(EventGenerator ** eventGen, Grapher ** grapher)
 {
-	grapher = new Grapher(XDISPLAY, YDISPLAY);
-	if (grapher->init_has_failed())
+	*grapher = new Grapher(XDISPLAY, YDISPLAY);
+	if ((*grapher)->init_has_failed())
 	{
 		return false;
 	}
-	eventGen = new EventGenerator();
-	if (eventGen->init_has_failed())
+	*eventGen = new EventGenerator();
+	if ((*eventGen)->init_has_failed())
 	{
 		return false;
 	}
