@@ -29,6 +29,7 @@ private:
 	bool init_allegro(int xDisplay, int yDisplay);
 	bool set_background();
 	bool set_worm_images();
+	ALLEGRO_BITMAP * get_bitmap(wormState_n currentState, uint frameCounter);
 
 };
 
