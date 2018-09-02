@@ -34,7 +34,14 @@ Event EventGenerator::get_event()
 	}
 	else if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
 	{
-		event.set_type(POSSIBLE_WORM_MOVE);
+		if (ev.keyboard.unichar == 'q')
+		{
+			event.set_type(QUIT);
+		}
+		else
+		{
+			event.set_type(POSSIBLE_WORM_MOVE);
+		}
 		event.set_key_event_unichar(ev.keyboard.unichar);
 	}
 	else if (ev.type == ALLEGRO_EVENT_KEY_UP)
@@ -61,7 +68,14 @@ bool EventGenerator::is_event()
 
 bool EventGenerator::is_quit()
 {
-	return false;
+	if (event.get_event_type == QUIT)
+	{
+		return true;
+	}
+	else 
+	{
+		return false;
+	}
 
 }
 
