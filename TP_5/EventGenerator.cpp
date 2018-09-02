@@ -12,16 +12,22 @@ EventGenerator::EventGenerator()
 	{
 		initError = true;
 	}
-	timer = al_create_timer(1.0 / FPS);
-	if (!timer) 
+	else 
 	{
-		initError = true;
+		timer = al_create_timer(1.0 / FPS);
+		if (!timer)
+		{
+			initError = true;
+		}
+		else 
+		{
+			al_register_event_source(event_queue, al_get_timer_event_source(timer));
+			al_register_event_source(event_queue, al_get_keyboard_event_source());
+
+			al_start_timer(timer);
+		}	
 	}
-
-	al_register_event_source(event_queue, al_get_timer_event_source(timer));
-	al_register_event_source(event_queue, al_get_keyboard_event_source());
-
-	al_start_timer(timer);
+	
 }
 
 Event EventGenerator::get_event()
