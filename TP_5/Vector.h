@@ -3,18 +3,20 @@ class Vector
 {
 public:
 	Vector();
-	Vector(double x_, double y_);
+	Vector(int x_, int y_);
 	Vector(Vector& v);
 	~Vector();
 
-	double get_x();
-	double get_y();
+	int get_x();
+	int get_y();
 
-	void set_x(double x_);
-	void set_y(double y_);
+	void set_x(int x_);
+	void set_y(int y_);
+	void inc_x(int dx);
+	void inc_y(int dy);
 
 private:
-	double x;
-	double y;
+	int x;
+	int y;
 };
 

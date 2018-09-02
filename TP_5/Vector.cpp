@@ -4,9 +4,11 @@
 
 Vector::Vector()
 {
+	x = 0;
+	y = 0;
 }
 
-Vector::Vector(double x_, double y_)
+Vector::Vector(int x_, int y_)
 {
 	x = x_;
 	y = y_;
@@ -23,22 +25,32 @@ Vector::~Vector()
 {
 }
 
-double Vector::get_x()
+int Vector::get_x()
 {
 	return x;
 }
 
-double Vector::get_y()
+int Vector::get_y()
 {
 	return y;
 }
 
-void Vector::set_x(double x_)
+void Vector::set_x(int x_)
 {
 	x = x_;
 }
 
-void Vector::set_y(double y_)
+void Vector::set_y(int y_)
 {
 	y = y_;
+}
+
+void Vector::inc_x(int dx)
+{
+	x += dx;
+}
+
+void Vector::inc_y(int dy)
+{
+	y += dy;
 }
