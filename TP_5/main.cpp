@@ -13,13 +13,13 @@ bool init(EventGenerator * eventGen, Grapher * grapher);
 
 int main(int argc, char *argv[])
 {
-	EventGenerator * eventGen;
-	Grapher * grapher;
-	Worm * wormPArray[2];
+	EventGenerator * eventGen= NULL;
+	Grapher * grapher = NULL;
+	Worm * wormPArray[] = {NULL, NULL};
 	Worm w1, w2;
 	int wormCount;
-	wormPArray[1] = &w1;
-	wormPArray[2] = &w2;
+	wormPArray[0] = &w1;
+	wormPArray[1] = &w2;
 	wormCount = 2;
 
 	if (init(eventGen, grapher))
@@ -30,10 +30,10 @@ int main(int argc, char *argv[])
 			{
 				dispatch(eventGen->get_event(), wormCount, wormPArray, grapher);
 			}
-
 		}
 	}
-	// DESTROYS
+	grapher->destroy();
+	eventGen->destroy();
 }
 
 bool init(EventGenerator * eventGen, Grapher * grapher)

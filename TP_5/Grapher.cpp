@@ -1,6 +1,7 @@
 #include "Grapher.h"
 #include <allegro5/allegro_image.h>
 #include <string> 
+#include "Vector.h"
 
 Grapher::Grapher(int xDisplay, int yDisplay)
 {
@@ -31,11 +32,11 @@ void Grapher::update(Worm * wArray[], int wormCount)
 	{
 		if (wArray[i]->get_currentState() == MOVING)
 		{
-			al_draw_bitmap(walkingImages[wArray[i]->get_frameCounter()], wArray[i]->get_pos.get_x(), wArray[i]->get_pos.get_y(), (wArray[i]->get_orientation) ? ALLEGRO_FLIP_HORIZONTAL : NO_ROTATION);
+			al_draw_bitmap(walkingImages[wArray[i]->get_frameCounter()], wArray[i]->get_pos().get_x(), wArray[i]->get_pos().get_y(), (wArray[i]->get_orientation()) ? ALLEGRO_FLIP_HORIZONTAL : NO_ROTATION);
 		}
 		else if (wArray[i]->get_currentState() == JUMPING)
 		{
-			al_draw_bitmap(jumpingImages[wArray[i]->get_frameCounter()], wArray[i]->get_pos.get_x(), wArray[i]->get_pos.get_y(), (wArray[i]->get_orientation) ? ALLEGRO_FLIP_HORIZONTAL : NO_ROTATION);
+			al_draw_bitmap(jumpingImages[wArray[i]->get_frameCounter()], wArray[i]->get_pos().get_x(), wArray[i]->get_pos().get_y(), (wArray[i]->get_orientation()) ? ALLEGRO_FLIP_HORIZONTAL : NO_ROTATION);
 		}
 	}
 	al_flip_display();
