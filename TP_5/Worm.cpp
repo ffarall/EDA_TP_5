@@ -4,7 +4,7 @@
 using namespace std;
 
 #define WORM_FSM_STATES 7
-#define WORM_FSM_EVENTS 5
+#define WORM_FSM_EVENTS 6
 #define NO_MOTION_FRAME_COUNT 8
 #define	JUMPING_WORM_UP_FRAMES 6
 #define FRAMES_PER_DX 14
@@ -192,12 +192,20 @@ wormEvent_n Worm::event_decoder(Event& ev_)
 		{
 			return KEY_JUMP_DOWN;
 		}
+		else
+		{
+			return NOT_VALID;
+		}
 	} break;
 	case POSSIBLE_WORM_STOP:
 	{
 		if (ev == keyLeft || ev == keyRight)
 		{
 			return KEY_MOVE_UP;
+		}
+		else
+		{
+			return NOT_VALID;
 		}
 	} break;
 	case REFRESH:
@@ -217,7 +225,8 @@ void Worm::update(Event& ev)
 		{{START_MOVING, no_act_routine},		{MOVING, no_act_routine},			{MOVING, no_act_routine},			{START_MOVING, turn_worm},			{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}},		// KEY_MOVE_LEFT_DOWN
 		{{IDLE, no_act_routine},				{STOP_MOVING, no_act_routine},		{STOP_MOVING, no_act_routine},		{IDLE, no_act_routine},				{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}},		// KEY_MOVE_UP
 		{{START_MOVING, refresh_start_moving},	{MOVING, refresh_moving},			{STOP_MOVING, refresh_stop_moving},	{IDLE, no_act_routine},				{START_JUMPING, refresh_start_jumping},	{JUMPING, refresh_jumping},	{LANDING, refresh_landing}},		// NEW_FRAME
-		{{START_JUMPING, no_act_routine},		{START_JUMPING, no_act_routine},	{START_JUMPING, no_act_routine},	{START_JUMPING, no_act_routine},	{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}}		// KEY_JUMP_DOWN
+		{{START_JUMPING, no_act_routine},		{START_JUMPING, no_act_routine},	{START_JUMPING, no_act_routine},	{START_JUMPING, no_act_routine},	{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}},		// KEY_JUMP_DOWN
+		{{START_MOVING, no_act_routine},		{MOVING, no_act_routine},			{STOP_MOVING, no_act_routine},		{IDLE, no_act_routine},				{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}}		// NOT_VALID
 	};
 
 	wormEvent_n wormEv = event_decoder(ev);

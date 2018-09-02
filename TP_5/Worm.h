@@ -7,7 +7,7 @@
 #define PI 3.14159
 
 typedef enum { START_MOVING, MOVING, STOP_MOVING, IDLE, START_JUMPING, JUMPING, LANDING } wormState_n;
-typedef enum { KEY_MOVE_RIGHT_DOWN, KEY_MOVE_LEFT_DOWN, KEY_MOVE_UP, NEW_FRAME, KEY_JUMP_DOWN } wormEvent_n;
+typedef enum { KEY_MOVE_RIGHT_DOWN, KEY_MOVE_LEFT_DOWN, KEY_MOVE_UP, NEW_FRAME, KEY_JUMP_DOWN, NOT_VALID } wormEvent_n;
 typedef unsigned int uint;
 typedef struct
 {
