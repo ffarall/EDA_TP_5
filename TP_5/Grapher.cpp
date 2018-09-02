@@ -58,8 +58,8 @@ bool Grapher::set_background()
 
 bool Grapher::set_worm_images()
 {
-	std::string wFile = "wwalk-F";
-	std::string jFile = "wjump-F";
+	std::string wFile = "wwalking\\wwalk-F";
+	std::string jFile = "wjump\\wjump-F";
 	std::string png = ".png";
 	std::string currentPhoto;
 
