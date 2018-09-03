@@ -8,8 +8,8 @@ using namespace std;
 #define NO_MOTION_FRAME_COUNT 8
 #define	JUMPING_WORM_UP_FRAMES 6
 #define FRAMES_PER_DX 14
-#define SCENARIO_LEFT_EDGE 701
-#define SCENARIO_RIGHT_EDGE	1212
+#define SCENARIO_LEFT_EDGE 680
+#define SCENARIO_RIGHT_EDGE	1175
 #define SCENARIO_FLOOR 616
 
 
@@ -221,11 +221,11 @@ void Worm::update(Event& ev)
 {
 	const wormFsmCell_n wormFsm[WORM_FSM_EVENTS][WORM_FSM_STATES] =
 	{ // START_MOVING,							MOVING,								STOP_MOVING,						IDLE,								START_JUMPING							JUMPING						LANDING	
-		{{START_MOVING, no_act_routine},		{MOVING, no_act_routine},			{MOVING, no_act_routine},			{START_MOVING, turn_worm},			{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}},		// KEY_MOVE_RIGHT_DOWN
-		{{START_MOVING, no_act_routine},		{MOVING, no_act_routine},			{MOVING, no_act_routine},			{START_MOVING, turn_worm},			{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}},		// KEY_MOVE_LEFT_DOWN
+		{{START_MOVING, no_act_routine},		{MOVING, no_act_routine},			{STOP_MOVING, no_act_routine},		{START_MOVING, turn_worm},			{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}},		// KEY_MOVE_RIGHT_DOWN
+		{{START_MOVING, no_act_routine},		{MOVING, no_act_routine},			{STOP_MOVING, no_act_routine},		{START_MOVING, turn_worm},			{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}},		// KEY_MOVE_LEFT_DOWN
 		{{IDLE, no_act_routine},				{STOP_MOVING, no_act_routine},		{STOP_MOVING, no_act_routine},		{IDLE, no_act_routine},				{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}},		// KEY_MOVE_UP
-		{{START_MOVING, refresh_start_moving},	{MOVING, refresh_moving},			{STOP_MOVING, refresh_stop_moving},	{IDLE, no_act_routine},				{START_JUMPING, refresh_start_jumping},	{JUMPING, refresh_jumping},	{LANDING, refresh_landing}},		// NEW_FRAME
-		{{START_JUMPING, no_act_routine},		{START_JUMPING, no_act_routine},	{START_JUMPING, no_act_routine},	{START_JUMPING, no_act_routine},	{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}},		// KEY_JUMP_DOWN
+		{{START_MOVING, refresh_start_moving},	{MOVING, refresh_moving},			{STOP_MOVING, refresh_stop_moving},	{IDLE, no_act_routine},				{START_JUMPING, refresh_start_jumping},	{JUMPING, refresh_jumping},	{LANDING, refresh_landing}},	// NEW_FRAME
+		{{START_JUMPING, start_jumping},		{START_JUMPING, start_jumping},		{START_JUMPING, start_jumping},		{START_JUMPING, start_jumping},		{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}},		// KEY_JUMP_DOWN
 		{{START_MOVING, no_act_routine},		{MOVING, no_act_routine},			{STOP_MOVING, no_act_routine},		{IDLE, no_act_routine},				{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}}		// NOT_VALID
 	};
 
@@ -292,6 +292,15 @@ void refresh_moving(void * worm_)
 		worm->set_frameCounter(NO_MOTION_FRAME_COUNT);			// After last movement, since key is still down, the movement is restarted AFTER the warm up.
 	} break;
 	}
+
+	if (worm->get_pos().get_x() < SCENARIO_LEFT_EDGE)
+	{
+		worm->set_x(SCENARIO_LEFT_EDGE);
+	}
+	else if (worm->get_pos().get_x() > SCENARIO_RIGHT_EDGE)
+	{
+		worm->set_x(SCENARIO_RIGHT_EDGE);
+	}
 }
 
 void refresh_stop_moving(void * worm_)
@@ -299,9 +308,12 @@ void refresh_stop_moving(void * worm_)
 	Worm * worm = (Worm *)worm_;
 	worm->inc_frameCounter();
 
-	if (worm->get_frameCounter() == (NO_MOTION_FRAME_COUNT + 3 * FRAMES_PER_DX))
+	switch (worm->get_frameCounter())
 	{
-		worm->set_currentState(IDLE);							// If movement ends while key is down, worm goes to rest.
+	case (NO_MOTION_FRAME_COUNT + FRAMES_PER_DX):
+	case (NO_MOTION_FRAME_COUNT + 2 * FRAMES_PER_DX):
+	case (NO_MOTION_FRAME_COUNT + 3 * FRAMES_PER_DX): worm->set_currentState(IDLE); break;
+	default: break;
 	}
 }
 
@@ -349,18 +361,18 @@ void refresh_jumping(void * worm_)
 	}
 	else
 	{
-		worm->inc_y(-jumpSpeed * cos(angle));
+		worm->inc_x(-jumpSpeed * cos(angle));
 	}
 	if (worm->get_pos().get_x() < SCENARIO_LEFT_EDGE)
 	{
 		worm->set_x(SCENARIO_LEFT_EDGE);
 	}
-	else if (worm->get_pos().get_y() < SCENARIO_RIGHT_EDGE)
+	else if (worm->get_pos().get_x() > SCENARIO_RIGHT_EDGE)
 	{
-		worm->set_y(SCENARIO_RIGHT_EDGE);
+		worm->set_x(SCENARIO_RIGHT_EDGE);
 	}
 
-	worm->set_y(SCENARIO_FLOOR + jumpSpeed * sin(angle) * worm->get_frameCounter() + (gravity / 2) * pow(worm->get_frameCounter(), 2));
+	worm->set_y(SCENARIO_FLOOR - jumpSpeed * sin(angle) * worm->get_frameCounter() + (gravity / 2) * pow(worm->get_frameCounter(), 2));
 	if (worm->get_pos().get_y() > SCENARIO_FLOOR)
 	{
 		worm->set_y(SCENARIO_FLOOR);
