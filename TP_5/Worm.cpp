@@ -8,8 +8,8 @@ using namespace std;
 #define NO_MOTION_FRAME_COUNT 8
 #define	JUMPING_WORM_UP_FRAMES 6
 #define FRAMES_PER_DX 14
-#define SCENARIO_LEFT_EDGE 680
-#define SCENARIO_RIGHT_EDGE	1175
+#define SCENARIO_LEFT_EDGE 685
+#define SCENARIO_RIGHT_EDGE	1170
 #define SCENARIO_FLOOR 616
 
 
@@ -310,9 +310,24 @@ void refresh_stop_moving(void * worm_)
 
 	switch (worm->get_frameCounter())
 	{
-	case (NO_MOTION_FRAME_COUNT + FRAMES_PER_DX):
-	case (NO_MOTION_FRAME_COUNT + 2 * FRAMES_PER_DX):
-	case (NO_MOTION_FRAME_COUNT + 3 * FRAMES_PER_DX): worm->set_currentState(IDLE); break;
+	case (NO_MOTION_FRAME_COUNT + FRAMES_PER_DX): 
+	{
+		worm->move(); 
+		worm->set_frameCounter(NO_MOTION_FRAME_COUNT);
+		worm->set_currentState(IDLE);
+	} break;
+	case (NO_MOTION_FRAME_COUNT + 2 * FRAMES_PER_DX): 
+	{
+		worm->move();
+		worm->set_frameCounter(NO_MOTION_FRAME_COUNT);
+		worm->set_currentState(IDLE);
+	} break;
+	case (NO_MOTION_FRAME_COUNT + 3 * FRAMES_PER_DX):
+	{
+		worm->move();
+		worm->set_currentState(IDLE);
+		worm->set_frameCounter(NO_MOTION_FRAME_COUNT);
+	} break;
 	default: break;
 	}
 }
