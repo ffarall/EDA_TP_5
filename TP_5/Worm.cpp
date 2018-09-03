@@ -357,5 +357,4 @@ void refresh_jumping(void * worm_)
 		worm->set_currentState(LANDING);			// If the worm got back to the floor, goes to LANDING state.
 		worm->set_frameCounter(0);
 	}
-
 }
