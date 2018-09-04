@@ -3,6 +3,8 @@
 #include <string> 
 #include "Vector.h"
 
+/*La funcionalidad de cada funcion esta explicada en el Grapher.h*/
+
 Grapher::Grapher(int xDisplay, int yDisplay)
 {
 	display = NULL;

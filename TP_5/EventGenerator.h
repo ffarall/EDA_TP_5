@@ -2,6 +2,8 @@
 #include "Event.h"
 #include <allegro5/allegro.h>
 
+/*La funcionalidad de cada funcion esta explicada en el Grapher.h*/
+
 #define FPS	50
 
 class EventGenerator
