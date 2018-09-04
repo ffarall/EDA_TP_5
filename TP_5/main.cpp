@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 
 	if (init(&eventGen, &grapher))
 	{
-		while (!eventGen->is_quit())	//Si el evento no es de salida, continua
+		while (!eventGen->is_quit())	//Si el evento no es de salida, continua SE SALE CON q.
 		{
 			if (eventGen->is_event())	//Chequea si hay eventos
 			{

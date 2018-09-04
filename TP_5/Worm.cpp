@@ -11,6 +11,7 @@ using namespace std;
 #define SCENARIO_LEFT_EDGE 685
 #define SCENARIO_RIGHT_EDGE	1170
 #define SCENARIO_FLOOR 616
+#define	WORM_MOVE_DIF 9.0
 
 
 Worm::Worm(): pos()
@@ -58,6 +59,8 @@ Worm::Worm(int x_, int y_): pos(x_, y_)
 Worm::~Worm()
 {
 }
+
+/*			GETTERS			*/
 
 Vector Worm::get_pos()
 {
@@ -113,6 +116,8 @@ char Worm::get_keyRight()
 {
 	return keyRight;
 }
+
+/*			SETTERS			*/		
 
 void Worm::set_pos(Vector pos_)
 {
@@ -173,6 +178,9 @@ void Worm::set_currentState(wormState_n st)
 	currentState = st;
 }
 
+
+/* Internal function to interprete the event and turn it into a Worm event, easier to handle by the fsm */
+
 wormEvent_n Worm::event_decoder(Event& ev_)
 {
 	ev = ev_.get_key_event_keycode();
@@ -219,6 +227,7 @@ wormEvent_n Worm::event_decoder(Event& ev_)
 
 void Worm::update(Event& ev)
 {
+	/* Fsm table */
 	const wormFsmCell_n wormFsm[WORM_FSM_EVENTS][WORM_FSM_STATES] =
 	{ // START_MOVING,							MOVING,								STOP_MOVING,						IDLE,								START_JUMPING							JUMPING						LANDING	
 		{{START_MOVING, no_act_routine},		{MOVING, no_act_routine},			{STOP_MOVING, no_act_routine},		{START_MOVING, turn_worm},			{START_JUMPING, no_act_routine},		{JUMPING, no_act_routine},	{LANDING, no_act_routine}},		// KEY_MOVE_RIGHT_DOWN
@@ -239,11 +248,11 @@ void Worm::move()
 {
 	if (lookingRight)
 	{
-		pos.inc_x(9.0);
+		pos.inc_x(WORM_MOVE_DIF);		
 	}
 	else
-	{
-		pos.inc_x(-9.0);
+	{	
+		pos.inc_x(-WORM_MOVE_DIF);
 	}
 }
 
@@ -271,7 +280,7 @@ void refresh_start_moving(void * worm_)
 	Worm * worm = (Worm *)worm_;
 	worm->inc_frameCounter();
 
-	if (worm->get_frameCounter() == NO_MOTION_FRAME_COUNT)
+	if (worm->get_frameCounter() == NO_MOTION_FRAME_COUNT)		// After the moving warm-up, state changes to moving.
 	{
 		worm->set_currentState(MOVING);
 	}
@@ -282,22 +291,22 @@ void refresh_moving(void * worm_)
 	Worm * worm = (Worm *)worm_;
 	worm->inc_frameCounter();
 
-	switch (worm->get_frameCounter())										// Every 14 frames after the warm up, the worm moves 9 pixels in the corresponding way.
+	switch (worm->get_frameCounter())							// Every 14 frames after the warm up, the worm moves 9 pixels in the corresponding way.
 	{
 	case (NO_MOTION_FRAME_COUNT + FRAMES_PER_DX): worm->move(); break;
 	case (NO_MOTION_FRAME_COUNT + 2 * FRAMES_PER_DX): worm->move(); break;
 	case (NO_MOTION_FRAME_COUNT + 3 * FRAMES_PER_DX):
 	{
 		worm->move();
-		worm->set_frameCounter(NO_MOTION_FRAME_COUNT);			// After last movement, since key is still down, the movement is restarted AFTER the warm up.
+		worm->set_frameCounter(NO_MOTION_FRAME_COUNT);			// After last movement, since key is still down, the movement is restarted AFTER the warm-up.
 	} break;
 	}
 
-	if (worm->get_pos().get_x() < SCENARIO_LEFT_EDGE)
+	if (worm->get_pos().get_x() < SCENARIO_LEFT_EDGE)			// If worm crosses the left edge, it gets pulled back into the allowed area.
 	{
 		worm->set_x(SCENARIO_LEFT_EDGE);
 	}
-	else if (worm->get_pos().get_x() > SCENARIO_RIGHT_EDGE)
+	else if (worm->get_pos().get_x() > SCENARIO_RIGHT_EDGE)		// If worm crosses the right edge, it gets pulled back into the allowed area.
 	{
 		worm->set_x(SCENARIO_RIGHT_EDGE);
 	}
@@ -308,20 +317,10 @@ void refresh_stop_moving(void * worm_)
 	Worm * worm = (Worm *)worm_;
 	worm->inc_frameCounter();
 
-	switch (worm->get_frameCounter())
+	switch (worm->get_frameCounter())					// After a key up event, worm stops moving ONLY after any movement cycle's been completed.
 	{
 	case (NO_MOTION_FRAME_COUNT + FRAMES_PER_DX): 
-	{
-		worm->move(); 
-		worm->set_frameCounter(NO_MOTION_FRAME_COUNT);
-		worm->set_currentState(IDLE);
-	} break;
 	case (NO_MOTION_FRAME_COUNT + 2 * FRAMES_PER_DX): 
-	{
-		worm->move();
-		worm->set_frameCounter(NO_MOTION_FRAME_COUNT);
-		worm->set_currentState(IDLE);
-	} break;
 	case (NO_MOTION_FRAME_COUNT + 3 * FRAMES_PER_DX):
 	{
 		worm->move();
@@ -343,7 +342,7 @@ void refresh_start_jumping(void * worm_)
 	Worm * worm = (Worm *)worm_;
 	worm->inc_frameCounter();
 
-	if (worm->get_frameCounter() == NO_MOTION_FRAME_COUNT)
+	if (worm->get_frameCounter() == NO_MOTION_FRAME_COUNT)		// After the moving warm-up, state changes to jumping.
 	{
 		worm->set_currentState(JUMPING);
 	}
@@ -356,7 +355,7 @@ void refresh_landing(void * worm_)
 
 	if (worm->get_frameCounter() == JUMPING_WORM_UP_FRAMES)
 	{
-		worm->set_currentState(IDLE);			// If the worm finish landing, goes back to resting.
+		worm->set_currentState(IDLE);			// If the worm finishes landing, goes back to resting.
 		worm->set_frameCounter(0);
 	}
 }
@@ -378,17 +377,17 @@ void refresh_jumping(void * worm_)
 	{
 		worm->inc_x(-jumpSpeed * cos(angle));
 	}
-	if (worm->get_pos().get_x() < SCENARIO_LEFT_EDGE)
+	if (worm->get_pos().get_x() < SCENARIO_LEFT_EDGE)			// If worm crosses the left edge, it gets pulled back into the allowed area.
 	{
-		worm->set_x(SCENARIO_LEFT_EDGE);
+		worm->set_x(SCENARIO_LEFT_EDGE);						
 	}
-	else if (worm->get_pos().get_x() > SCENARIO_RIGHT_EDGE)
+	else if (worm->get_pos().get_x() > SCENARIO_RIGHT_EDGE)		// If worm crosses the right edge, it gets pulled back into the allowed area.
 	{
 		worm->set_x(SCENARIO_RIGHT_EDGE);
 	}
 
 	worm->set_y(SCENARIO_FLOOR - jumpSpeed * sin(angle) * worm->get_frameCounter() + (gravity / 2) * pow(worm->get_frameCounter(), 2));
-	if (worm->get_pos().get_y() > SCENARIO_FLOOR)
+	if (worm->get_pos().get_y() > SCENARIO_FLOOR)	// If worm crosses the floor, it gets pulled back to the right position.
 	{
 		worm->set_y(SCENARIO_FLOOR);
 		worm->set_currentState(LANDING);			// If the worm got back to the floor, goes to LANDING state.
