@@ -109,47 +109,42 @@ ALLEGRO_BITMAP * Grapher::get_bitmap(wormState_n currentState, uint frameCounter
 			break;
 		case MOVING:
 		case STOP_MOVING:
-			if ((frameCounter >= 9) && (frameCounter <= 16))
-			{
-				/*	Del frame 9 al 16 la imagen que se debe mostrar es "5" menos. P. ej. para el 9 se debe mostrar la imagen 4.
-				*	Esta imagen se encuentra almacenada en el array en la posicion 3.
-				*	Por esta razon se restan 6 y no 5.
-				*	Como esta secuencia se debe repetir 3 veces, lo mismo sucedera para los frames entre 23 y 30 y entre 37 y 44.
-				*	La unica diferencia sera que se debera restar [5 + (14 o 28) + 1] al indicador de posicion del array. 
-				*/
-				return walkingImages[frameCounter -6];
-			}
-			else if ((frameCounter >= 17) && (frameCounter <= 21))
-			{
-				/*	Del frame 17 al 21 la imagen que se debe mostrar es "6" menos. P. ej. para el 17 se debe mostrar la imagen 13.
-				*	Esta imagen se encuentra almacenada en el array en la posicion 12.
-				*	Por esta razon se restan 7 y no 6.	
-				*	Como esta secuencia se debe repetir 3 veces, lo mismo sucedera para los frames entre 31 y 35 y entre 45 y 49.
-				*	La unica diferencia sera que se debera restar [6 + (14 o 28) + 1] al indicador de posicion del array. 
-				*/
-				return walkingImages[frameCounter - 7];
-			}
-			else if ((frameCounter >= 23) && (frameCounter <= 30))
-			{
-				return walkingImages[frameCounter -20];
-			}
-			else if ((frameCounter >= 31) && (frameCounter <= 35))
-			{
-				return walkingImages[frameCounter - 21];
-			}
-			else if ((frameCounter >= 37) && (frameCounter <= 44))
-			{
-				return walkingImages[frameCounter -34];
-			}
-			else if ((frameCounter >= 45) && (frameCounter <= 49))
-			{
-				return walkingImages[frameCounter - 35];
-			}
-			else if (((frameCounter-8) % 14) == 0)
+			if (((frameCounter - 8) % 14) == 0)
 			{
 				/*Para el ultimo frame de cada ciclo se debera mostrar la imagen 4, almacenada en la posicion 3 del array.*/
 				return walkingImages[3];
 			}
+			else 
+			{
+				for (int i = 0; i < 3; i++) //3: cantidad de repeticiones.
+				{
+					/*	Del frame 9 al 16 la imagen que se debe mostrar es "5" menos. P. ej. para el 9 se debe mostrar la imagen 4.
+					*	Esta imagen se encuentra almacenada en el array en la posicion 3.
+					*	Por esta razon se restan 6 y no 5.
+					*	Como esta secuencia se debe repetir 3 veces, lo mismo sucedera para los frames entre 23 y 30 y entre 37 y 44.
+					*	La unica diferencia sera que se debera restar [5 + (14 o 28) + 1] al indicador de posicion del array.
+					*/
+					if ((frameCounter >= (9 + 14*i)) && (frameCounter <= (16 +14*i)))
+					{
+						
+						return walkingImages[frameCounter - 6 -14*i];
+					}
+
+					/*	Del frame 17 al 21 la imagen que se debe mostrar es "6" menos. P. ej. para el 17 se debe mostrar la imagen 13.
+					*	Esta imagen se encuentra almacenada en el array en la posicion 12.
+					*	Por esta razon se restan 7 y no 6.
+					*	Como esta secuencia se debe repetir 3 veces, lo mismo sucedera para los frames entre 31 y 35 y entre 45 y 49.
+					*	La unica diferencia sera que se debera restar [6 + (14 o 28) + 1] al indicador de posicion del array.
+					*/
+					else if ((frameCounter >= (17+14*i)) && (frameCounter <= (21+14*i)))
+					{
+						
+						return walkingImages[frameCounter - 7 -14*i];
+					}
+				}
+			}
+			
+			
 			break;
 		
 		case JUMPING:
