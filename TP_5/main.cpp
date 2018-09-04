@@ -52,18 +52,18 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
-	grapher->destroy();
-	eventGen->destroy();
+	delete grapher;
+	delete eventGen;
 }
 
 bool init(EventGenerator ** eventGen, Grapher ** grapher)
 {
-	*grapher = new Grapher(XDISPLAY, YDISPLAY);
+	*grapher = new Grapher(XDISPLAY, YDISPLAY);	//Grapher inicializa a su vez Allegro y el display de Allegro.
 	if ((*grapher)->init_has_failed())
 	{
 		return false;
 	}
-	*eventGen = new EventGenerator();
+	*eventGen = new EventGenerator();			//eventGen inicializa a su vez la cola de eventos y el timer de Allegro.
 	if ((*eventGen)->init_has_failed())
 	{
 		return false;

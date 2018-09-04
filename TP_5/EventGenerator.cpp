@@ -9,21 +9,21 @@ EventGenerator::EventGenerator(): event()
 	event_queue = NULL;
 	timer = NULL;
 	initError = false;
-	event_queue = al_create_event_queue();
-	if (!event_queue) 
+	event_queue = al_create_event_queue();	//Crea cola de eventos
+	if (!event_queue)	//Chequea error
 	{
 		initError = true;
 	}
 	else 
 	{
-		timer = al_create_timer(1.0 / FPS);
-		if (!timer)
+		timer = al_create_timer(1.0 / FPS);	//Crea timer
+		if ((!timer) || (!al_install_keyboard()))	//Chequea error
 		{
 			initError = true;
 		}
-		else 
+		else
 		{
-			al_install_keyboard();
+			/*Se asocia eventos con la cola de eventos*/
 			al_register_event_source(event_queue, al_get_timer_event_source(timer));
 			al_register_event_source(event_queue, al_get_keyboard_event_source());
 
@@ -33,34 +33,40 @@ EventGenerator::EventGenerator(): event()
 	
 }
 
+EventGenerator::~EventGenerator()
+{
+	if(event_queue)
+		al_destroy_event_queue(event_queue);	//Destruye cola de eventos
+	if(timer)
+		al_destroy_timer(timer);				//Destruye timer
+}
+
 Event EventGenerator::get_event()
 {
 	ALLEGRO_EVENT ev;
 	al_wait_for_event(event_queue, &ev);
-	if (ev.type == ALLEGRO_EVENT_TIMER)
+	switch (ev.type)								//Se genera el evento dependiendo del tipo de evento de Allegro
 	{
-		event.set_type(REFRESH);
+		case ALLEGRO_EVENT_TIMER:
+			event.set_type(REFRESH);
+			break;
+		case ALLEGRO_EVENT_KEY_DOWN:
+			if (ev.keyboard.keycode == Q_KEYCODE)	//Q es la tecla para salir del programa. 
+			{
+				event.set_type(QUIT);				//Si se presiona la Q el evento sera de tipo QUIT
+			}
+			else
+			{
+				event.set_type(POSSIBLE_WORM_MOVE);
+			}
+			event.set_key_event_keycode(ev.keyboard.keycode);
+			break;
+		case ALLEGRO_EVENT_KEY_UP:
+			event.set_type(POSSIBLE_WORM_STOP);
+			event.set_key_event_keycode(ev.keyboard.keycode);
+			break;
 	}
-	else if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
-	{
-		if (ev.keyboard.keycode == Q_KEYCODE)
-		{
-			event.set_type(QUIT);
-		}
-		else
-		{
-			event.set_type(POSSIBLE_WORM_MOVE);
-		}
-		event.set_key_event_keycode(ev.keyboard.keycode);
-	}
-	else if (ev.type == ALLEGRO_EVENT_KEY_UP)
-	{
-		event.set_type(POSSIBLE_WORM_STOP);
-		event.set_key_event_keycode(ev.keyboard.keycode);
-	}
-
 	return event;
-
 }
 
 bool EventGenerator::is_event()
@@ -91,10 +97,4 @@ bool EventGenerator::is_quit()
 bool EventGenerator::init_has_failed()
 {
 	return initError;
-}
-
-void EventGenerator::destroy()
-{
-	al_destroy_event_queue(event_queue);
-	al_destroy_timer(timer);
 }

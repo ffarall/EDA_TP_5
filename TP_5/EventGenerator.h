@@ -8,6 +8,7 @@ class EventGenerator
 {
 public:
 	EventGenerator();
+	~EventGenerator();
 	
 	/*is_event*/
 	//Devuelve si hay algun evento que espere ser atendido
@@ -26,9 +27,6 @@ public:
 	//Relacionado con inicializadores del timer y eventqueue de Allegro.
 	bool init_has_failed();
 
-	/*destroy*/
-	//Destructor de elementos internos.
-	void destroy();
 
 private:
 	Event event;
