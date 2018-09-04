@@ -35,20 +35,22 @@ int main(int argc, char *argv[])
 	int wormCount;
 	wormPArray[0] = &w1;
 	wormPArray[1] = &w2;
+
+	/*Se le da a cada Worm una posicion inicial aleatoria dentro de los limites y las teclas con las que reaccionara cada uno*/
 	wormPArray[0]->set_pos(rand() % (SCENARIO_RIGHT_EDGE - SCENARIO_LEFT_EDGE) + SCENARIO_LEFT_EDGE, SCENARIO_FLOOR);
 	wormPArray[0]->set_keys(UP_KEYCODE, LEFT_KEYCODE, RIGHT_KEYCODE);
 	wormPArray[1]->set_pos(rand() % (SCENARIO_RIGHT_EDGE - SCENARIO_LEFT_EDGE) + SCENARIO_LEFT_EDGE, SCENARIO_FLOOR);
 	wormPArray[1]->set_keys(W_KEYCODE, A_KEYCODE, D_KEYCODE);
 
-	wormCount = 2;
+	wormCount = 2;	//Cuantos worms hay
 
 	if (init(&eventGen, &grapher))
 	{
-		while (!eventGen->is_quit())
+		while (!eventGen->is_quit())	//Si el evento no es de salida, continua
 		{
-			if (eventGen->is_event())
+			if (eventGen->is_event())	//Chequea si hay eventos
 			{
-				dispatch(eventGen->get_event(), wormCount, wormPArray, grapher);
+				dispatch(eventGen->get_event(), wormCount, wormPArray, grapher);	//Cede el control a una funcion u otra dependiendo del evento.
 			}
 		}
 	}
@@ -59,12 +61,12 @@ int main(int argc, char *argv[])
 bool init(EventGenerator ** eventGen, Grapher ** grapher)
 {
 	*grapher = new Grapher(XDISPLAY, YDISPLAY);	//Grapher inicializa a su vez Allegro y el display de Allegro.
-	if ((*grapher)->init_has_failed())
+	if ((*grapher)->init_has_failed())			//Chequea fallo
 	{
 		return false;
 	}
 	*eventGen = new EventGenerator();			//eventGen inicializa a su vez la cola de eventos y el timer de Allegro.
-	if ((*eventGen)->init_has_failed())
+	if ((*eventGen)->init_has_failed())			//Chequea fallo
 	{
 		return false;
 	}
